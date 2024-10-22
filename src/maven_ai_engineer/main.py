@@ -15,14 +15,16 @@ logging.basicConfig(
 
 
 def main():
-    from .commands import chat, start
+    from .commands import chat, mozilla, start
 
     application = ApplicationBuilder().token(tg_bot_token).build()
 
     start_handler = CommandHandler("start", start)
     chat_handler = CommandHandler("chat", chat)
+    mozilla_handler = CommandHandler("mozilla", mozilla)
     application.add_handler(start_handler)
     application.add_handler(chat_handler)
+    application.add_handler(mozilla_handler)
 
     application.run_polling()
 
