@@ -8,9 +8,14 @@ packages = [
     { include = "maven-ai-engineer" }
 ]
 dependencies = [
+    "langchain>=0.3.4",
+    "numpy>=1.26.4",
     "openai>=1.52.0",
+    "pandas>=2.2.3",
     "python-dotenv>=1.0.1",
     "python-telegram-bot>=21.6",
+    "scipy>=1.14.1",
+    "tiktoken>=0.8.0",
 ]
 
 [build-system]
@@ -19,3 +24,5 @@ build-backend = "hatchling.build"
 
 [project.scripts]
 bot = 'maven_ai_engineer.main:main'
+process-scraped = 'maven_ai_engineer.embedding.embed:process_scraped'
+process-embeddings = 'maven_ai_engineer.embedding.embed:process_embeddings'
