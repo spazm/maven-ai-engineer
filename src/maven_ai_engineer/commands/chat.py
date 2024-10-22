@@ -1,23 +1,15 @@
 import logging
-import os
 
-from openai import OpenAI
 from telegram import Update
 from telegram.ext import ContextTypes
 
-openai = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+from maven_ai_engineer.openai import openai
 
 logger = logging.getLogger(__name__)
 
 messages = [
     {"role": "system", "content": "You are a helpful assistant that answers questions."}
 ]
-
-
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!"
-    )
 
 
 async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
