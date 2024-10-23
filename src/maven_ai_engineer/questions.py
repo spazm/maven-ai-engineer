@@ -1,8 +1,11 @@
+import logging
 from typing import List
 
 from scipy import spatial
 
 from .openai import openai
+
+logger = logging.getLogger(__name__)
 
 
 def distances_from_embeddings(
@@ -77,6 +80,7 @@ def answer_question(
         max_len=max_len,
     )
     # If debug, print the raw model response
+    logger.debug("context: %s", context)
     if debug:
         print("Context:\n" + context)
         print("\n\n")
@@ -100,5 +104,6 @@ def answer_question(
         )
         return response.choices[0].message.content
     except Exception as e:
+        logger.error(e)
         print(e)
         return ""
