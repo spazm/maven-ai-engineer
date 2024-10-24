@@ -2,7 +2,8 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from telegram.ext import ApplicationBuilder, CommandHandler
+from telegram.ext import (ApplicationBuilder, CommandHandler, MessageHandler,
+                          filters)
 
 load_dotenv()
 
@@ -22,7 +23,7 @@ def main():
     application = ApplicationBuilder().token(tg_bot_token).build()
 
     start_handler = CommandHandler("start", start)
-    chat_handler = CommandHandler("chat", chat)
+    chat_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), chat)
     mozilla_handler = CommandHandler("mozilla", mozilla)
     logging.info("Adding handlers")
     application.add_handler(start_handler)
