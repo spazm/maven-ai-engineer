@@ -1,14 +1,15 @@
 import logging
-from cairosvg import svg2png
 
+from cairosvg import svg2png
 
 logger = logging.getLogger(__name__)
 
 
 def svg_to_png_bytes(svg_string):
     # Convert SVG string to PNG bytes
-    png_bytes = svg2png(bytestring=svg_string.encode('utf-8'))
+    png_bytes = svg2png(bytestring=svg_string.encode("utf-8"))
     return png_bytes
+
 
 def python_math_execution(math_string):
     try:
@@ -17,7 +18,8 @@ def python_math_execution(math_string):
             return str(answer)
     except Exception as e:
         logger.error(e)
-        return 'invalid code generated'
+        return "invalid code generated"
+
 
 def run_function(name: str, args: dict):
     if name == "svg_to_png_bytes":
@@ -26,6 +28,7 @@ def run_function(name: str, args: dict):
         return python_math_execution(args["math_string"])
     else:
         return None
+
 
 functions = [
     {
@@ -37,10 +40,8 @@ functions = [
                 "type": "object",
                 "properties": {
                     "svg_string": {
-                        "type":
-                        "string",
-                        "description":
-                        "A fully formed SVG element in the form of a string",
+                        "type": "string",
+                        "description": "A fully formed SVG element in the form of a string",
                     },
                 },
                 "required": ["svg_string"],
@@ -56,10 +57,8 @@ functions = [
                 "type": "object",
                 "properties": {
                     "math_string": {
-                        "type":
-                        "string",
-                        "description":
-                        "A string that solves a math problem that conforms with python syntax that could be passed directly to an eval() function",
+                        "type": "string",
+                        "description": "A string that solves a math problem that conforms with python syntax that could be passed directly to an eval() function",
                     },
                 },
                 "required": ["math_string"],
