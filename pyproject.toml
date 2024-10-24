@@ -9,6 +9,7 @@ packages = [
 ]
 dependencies = [
     "bottleneck>=1.4.2",
+    "cairosvg>=2.7.1",
     "langchain>=0.3.4",
     "numpy>=1.26.4",
     "openai>=1.52.0",
