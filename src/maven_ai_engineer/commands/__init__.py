@@ -3,6 +3,7 @@ from telegram.ext import ContextTypes
 
 from .chat import chat, reset
 from .mozilla import mozilla
+from .transcription import transcribe_message
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -11,4 +12,4 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-__all__ = [start, chat, reset, mozilla]
+__all__ = [start, chat, reset, mozilla, transcribe_message]
