@@ -2,7 +2,13 @@ import logging
 import os
 
 from dotenv import load_dotenv
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
+from telegram.ext import (
+    ApplicationBuilder,
+    CallbackQueryHandler,
+    CommandHandler,
+    MessageHandler,
+    filters,
+)
 
 load_dotenv()
 
@@ -16,7 +22,14 @@ logging.basicConfig(
 
 def main():
     logging.info("Importing commands")
-    from .commands import chat, mozilla, reset, start, transcribe_message
+    from .commands import (
+        chat,
+        mozilla,
+        reset,
+        start,
+        transcribe_message,
+        voice_choice_callback,
+    )
 
     logging.info("Building application")
     application = ApplicationBuilder().token(tg_bot_token).build()
@@ -30,6 +43,7 @@ def main():
     application.add_handler(mozilla_handler)
     application.add_handler(CommandHandler("reset", reset))
     application.add_handler(MessageHandler(filters.VOICE, transcribe_message))
+    application.add_handler(CallbackQueryHandler(voice_choice_callback))
 
     logging.info("polling")
     application.run_polling()
