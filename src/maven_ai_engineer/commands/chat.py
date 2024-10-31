@@ -1,22 +1,32 @@
-import logging
 import json
+import logging
 
-from maven_ai_engineer.openai import openai
 from telegram import Update
 from telegram.ext import ContextTypes
+
+from maven_ai_engineer.openai import openai
 
 from ..functions import functions, run_function
 from ..prompts import CODE_PROMPT
 
 logger = logging.getLogger(__name__)
 
-messages = [
+system_prompt = [
     {
         "role": "system",
         "content": "You are a helpful assistant that answers questions.",
     },
-    {"role": "system", "content": CODE_PROMPT},
+    {
+        "role": "system",
+        "content": CODE_PROMPT,
+    },
 ]
+messages = system_prompt.copy()
+
+
+def reset_messages():
+    messages.clear()
+    messages.extend(system_prompt)
 
 
 def _chat(content):
@@ -27,6 +37,14 @@ def _chat(content):
     response = completion.choices[0].message
     messages.append(response)
     return response
+
+
+async def reset(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logger.info("Received chat reset request")
+    reset_messages()
+    await context.bot.send_message(
+        chat_id=update.effective_chat.id, text="Chat memory cleared."
+    )
 
 
 async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -57,7 +75,8 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
                         "tool_call_id": tool_call.id,
                         "role": "system",
                         "name": name,
-                        "content": "Image was sent to the user, do not send the base64 string to them.",
+                        # "content": str(response) + "Image was sent to the user, do not send the base64 string to them. Only send back 'here is the svg rendered as requested'",
+                        "content": "Image was sent to the user, do not send the base64 string to them. Only send back 'here is the svg rendered as requested'",
                     }
                 )
             # Generate the final response

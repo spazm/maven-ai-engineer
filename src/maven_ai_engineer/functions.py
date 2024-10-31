@@ -11,7 +11,7 @@ def svg_to_png_bytes(svg_string):
     return png_bytes
 
 
-def python_math_execution(math_string):
+def python_math_execution(math_string) -> str | None:
     try:
         answer = eval(math_string)
         if answer:

@@ -17,7 +17,7 @@ logging.basicConfig(
 
 def main():
     logging.info("Importing commands")
-    from .commands import chat, mozilla, start
+    from .commands import chat, mozilla, start, reset
 
     logging.info("Building application")
     application = ApplicationBuilder().token(tg_bot_token).build()
@@ -29,6 +29,7 @@ def main():
     application.add_handler(start_handler)
     application.add_handler(chat_handler)
     application.add_handler(mozilla_handler)
+    application.add_handler(CommandHandler("reset", reset))
 
     logging.info("polling")
     application.run_polling()

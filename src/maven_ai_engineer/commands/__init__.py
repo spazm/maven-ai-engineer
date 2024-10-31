@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from .chat import chat
+from .chat import chat, reset
 from .mozilla import mozilla
 
 
@@ -11,4 +11,4 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-__all__ = [start, chat, mozilla]
+__all__ = [start, chat, reset, mozilla]
