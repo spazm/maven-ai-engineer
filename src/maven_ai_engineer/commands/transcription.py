@@ -1,7 +1,14 @@
+from pathlib import Path
+
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import ContextTypes
 
 from maven_ai_engineer.openai import openai
+
+# Get the directory of the current script
+ROOT_PATH = Path(__file__).parent.parent
+VOICE_NOTES_PATH = ROOT_PATH.parent.parent / "voice_notes"
+VOICE_NOTES_PATH.mkdir(parents=True, exist_ok=True)
 
 
 async def transcribe_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -9,9 +16,10 @@ async def transcribe_message(update: Update, context: ContextTypes.DEFAULT_TYPE)
     voice_id = update.message.voice.file_id
     if voice_id:
         file = await context.bot.get_file(voice_id)
-        await file.download_to_drive(f"voice_note_{voice_id}.ogg")
+        voice_note_path = VOICE_NOTES_PATH / f"voice_note_{voice_id}.ogg"
+        await file.download_to_drive(voice_note_path)
         await update.message.reply_text("Voice note downloaded, transcribing now")
-        audio_file = open(f"voice_note_{voice_id}.ogg", "rb")
+        audio_file = open(voice_note_path, "rb")
         transcript = openai.audio.transcriptions.create(
             model="whisper-1", file=audio_file
         )
@@ -55,7 +63,7 @@ async def voice_choice_callback(update: Update, context: ContextTypes.DEFAULT_TY
         )
 
         # Save the TTS response to a file
-        tts_voice_note_path = f"tts_voice_note_{voice_id}.mp3"
+        tts_voice_note_path = VOICE_NOTES_PATH / f"tts_voice_note_{voice_id}.mp3"
         tts_response.stream_to_file(tts_voice_note_path)
 
         # Send the TTS-generated voice note back to the user
